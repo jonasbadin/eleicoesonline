@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sua cidade no 2º turno · eleicoesonline.com.br</title>
+<!-- v20261026-2200 --><title>Sua cidade no 2º turno · eleicoesonline.com.br</title>
 <meta name="description" content="Monte o card da sua cidade: resultado do 2º turno de 2026, votos novos, comparecimento, 2022 × 2026 e comparativos. Dados oficiais do TSE.">
 <meta property="og:title" content="Sua cidade no 2º turno de 2026"><meta property="og:description" content="E se a eleição fosse só com os votos novos? Veja e baixe o card da sua cidade.">
 <style>
@@ -36,6 +36,12 @@ canvas{width:100%;height:auto;border-radius:16px;box-shadow:0 20px 60px rgba(0,0
 .mini{height:10px;border-radius:5px;background:var(--pl);overflow:hidden;margin-top:4px}.mini span{display:block;height:100%;background:var(--lula)}
 .frase{font-size:15px;line-height:1.5;margin-top:10px}.frase b{color:#fff}
 .vazio{color:var(--sub);text-align:center;padding:60px 10px;border:2px dashed var(--linha);border-radius:16px}
+.pub{margin:18px 0 4px;text-align:center}.pub img{max-width:100%;border-radius:10px}.pub .cel{display:none}@media(max-width:560px){.pub .des{display:none}.pub .cel{display:inline}}
+.exp{margin-top:34px}.exp h2.t{font-size:clamp(22px,3.5vw,30px);font-weight:900;margin-bottom:6px}.exp p.st{color:var(--sub);margin-bottom:14px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.tabs button{background:rgba(255,255,255,.07);border:1px solid var(--linha);color:#fff;border-radius:999px;padding:8px 14px;font-size:14px;font-weight:700;cursor:pointer}.tabs button.on{background:var(--am);color:#0b1530;border-color:var(--am)}
+.filtros{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;align-items:center}.filtros select{background:#16234a;color:#fff;border:1px solid var(--linha);border-radius:10px;padding:8px 10px;font-size:14px}
+.rk td{cursor:pointer}.rk tr:hover td{background:rgba(244,183,64,.08)}.rk .n{color:var(--sub);width:34px}
+details{border-top:1px solid var(--linha);padding:12px 0}details summary{cursor:pointer;font-weight:800;font-size:16px}details p{color:var(--sub);margin-top:8px;line-height:1.55}
 footer{color:var(--sub);font-size:13px;margin-top:30px;line-height:1.6}
 </style></head><body><div class="wrap">
 <header><a class="logo" href="/">eleicoes<b>online</b>.com.br</a><a class="eu" href="https://www.instagram.com/jonasbadin/" target="_blank" rel="noopener"><img src="foto-jonas.png" alt="">@jonasbadin</a></header>
@@ -49,7 +55,25 @@ footer{color:var(--sub);font-size:13px;margin-top:30px;line-height:1.6}
   <div class="acoes"><button class="btn" id="baixar">⬇ Baixar card</button><button class="btn sec" id="compart">Compartilhar</button><button class="btn sec" id="link">Copiar link</button></div></div>
  <div id="info"></div>
 </div>
+<div class="pub"><a href="https://wa.me/5555984284701?text=Ol%C3%A1!%20Vi%20o%20an%C3%BAncio%20no%20eleicoesonline.com.br%20e%20quero%20saber%20dos%20im%C3%B3veis." target="_blank" rel="noopener sponsored"><img class="des" src="../anuncios/imobiliaria-728x90.png?v=6" alt="Imobiliária Cruz Alta · Garantia de um bom negócio · WhatsApp (55) 98428-4701"><img class="cel" src="../anuncios/imobiliaria-320x100.png?v=6" alt="Imobiliária Cruz Alta"></a><div class="s" style="font-size:11px;margin-top:2px">publicidade</div></div>
 <div class="vazio" id="vazio">Comece digitando o nome da sua cidade 👆</div>
+<section class="exp">
+ <h2 class="t">Explore o 2º turno</h2><p class="st">Clique numa cidade para ver o card dela.</p>
+ <div class="painel"><div class="kpis" id="brk"></div></div>
+ <div class="painel"><h2>Rankings de cidades</h2>
+  <div class="tabs" id="rtabs"><button data-r="novosL" class="on">Lula mais levou votos novos</button><button data-r="novosF">Flávio mais levou votos novos</button><button data-r="inv">Resultado mais se inverte</button><button data-r="vira">Viraram para o Lula</button><button data-r="lula">Mais votos no Lula</button><button data-r="flavio">Mais votos no Flávio</button><button data-r="cresceL">Lula mais cresceu vs 2022</button><button data-r="cresceF">PL mais cresceu vs 2022</button><button data-r="comp">Maior comparecimento</button><button data-r="abst">Maior abstenção</button><button data-r="bn">Mais brancos e nulos</button><button data-r="terc">Mais votos na terceira via</button></div>
+  <div class="filtros"><label class="s">Estado <select id="fuf"><option value="">Brasil</option></select></label><label class="s">Tamanho <select id="fsz"><option value="0">todas</option><option value="10000">10 mil+ eleitores</option><option value="50000" selected>50 mil+</option><option value="200000">200 mil+</option></select></label></div>
+  <table class="tb rk" id="rk"></table></div>
+ <div class="painel"><h2>Estados</h2><table class="tb rk" id="ests"></table><p class="s" style="font-size:13px;margin-top:8px">Clique no título de uma coluna para ordenar, ou num estado para ver o ranking dele.</p></div>
+ <div class="painel"><h2>Perguntas frequentes</h2>
+  <details><summary>O que são «votos novos»?</summary><p>É quanto cada candidato cresceu do 1º para o 2º turno, em votos. Eles vêm de três lugares: de quem votou em outros candidatos no 1º turno, de quem não foi votar no 1º e foi no 2º, e de quem anulou ou votou em branco no 1º. «Só com os votos novos» é uma conta para ver quem ganhou a campanha do 2º turno: não muda o resultado, que é o oficial.</p></details>
+  <details><summary>Por que o Lula levou a maioria dos votos novos até onde o Flávio é forte?</summary><p>Porque os votos novos são, por definição, de quem não votou no líder no 1º turno. Isso acontece em todo 2º turno: em 2022, o Bolsonaro, que estava atrás, levou 70% dos votos novos, inclusive nos redutos do Lula; em 2026, o Lula, que estava atrás, levou 74%. Desde 2010, quem está atrás no 1º turno leva a maioria dos votos novos.</p></details>
+  <details><summary>Se o Flávio teve menos votos no 2º turno numa cidade, isso é estranho?</summary><p>Acontece em toda eleição: em 2026, o Flávio teve menos votos no 2º turno em 938 cidades; em 2022, o Lula teve menos em 982; em 2006, o Alckmin em mais de 5 mil. Geralmente é cidade pequena onde menos gente foi votar no 2º turno.</p></details>
+  <details><summary>De onde vêm os dados?</summary><p>Dos arquivos oficiais de resultado do TSE, por município: 1º e 2º turno de 2026 (100% apurado) e 2º turno de 2022. Os números do 1º turno de 2026 batem voto a voto com a soma dos boletins de urna publicados pelo TSE.</p></details>
+  <details><summary>Posso usar o card?</summary><p>Pode: baixe e compartilhe à vontade. Se postar, marque @jonasbadin.</p></details>
+  <details><summary>Onde está a apuração ao vivo da noite da eleição?</summary><p>A página da apuração ao vivo continua no ar, congelada no resultado final: <a href="/apuracao/">eleicoesonline.com.br/apuracao</a>.</p></details>
+ </div>
+</section>
 <footer>Fonte: TSE, resultados oficiais do 1º e do 2º turno de 2026 e do 2º turno de 2022, por município. «Só com os votos novos» é uma conta: quanto cada candidato cresceu entre os turnos, sem considerar os votos do 1º turno. O resultado que vale é o oficial. Página independente, criada por <a href="https://www.instagram.com/jonasbadin/" target="_blank" rel="noopener">@jonasbadin</a>.</footer>
 </div>
 <script>
@@ -62,7 +86,7 @@ let C=[],porId=new Map(),UFT={},BR=null,atual=null,comp=null,fmt='feed';const ma
 const obj=r=>{const c={nm:r[0],uf:r[1],id:r[2],ap:r[3],c1:r[4],F1:r[5],L1:r[6],o1:r[7],b1:r[8],n1:r[9],c2:r[10],F2:r[11],L2:r[12],b2:r[13],n2:r[14],L22:r[15],B22:r[16],c22:r[17]};c.k=norm(c.nm);c.dL=c.L2-c.L1;c.dF=c.F2-c.F1;c.l2=100*c.L2/(c.L2+c.F2);c.sn=100*c.dL/Math.max(1,c.dL+Math.max(0,c.dF));c.v1=c.F1+c.L1+c.o1;c.tu1=100*c.c1/c.ap;c.tu2=100*c.c2/c.ap;c.l22=c.L22!=null?100*c.L22/(c.L22+c.B22):null;return c};
 const soma=X=>{const s={nm:'',ap:0,c1:0,F1:0,L1:0,o1:0,b1:0,n1:0,c2:0,F2:0,L2:0,b2:0,n2:0,L22:0,B22:0};for(const c of X)for(const k in s)if(k!=='nm')s[k]+=c[k]||0;s.dL=s.L2-s.L1;s.dF=s.F2-s.F1;s.l2=100*s.L2/(s.L2+s.F2);s.sn=100*s.dL/(s.dL+Math.max(0,s.dF));s.v1=s.F1+s.L1+s.o1;s.tu1=100*s.c1/s.ap;s.tu2=100*s.c2/s.ap;s.l22=100*s.L22/(s.L22+s.B22);return s};
 const foto=new Image();foto.src='foto-jonas.png';
-fetch('dados.json').then(r=>r.json()).then(d=>{C=d.map(obj);C.forEach(c=>porId.set(c.id,c));for(const u in UFN)UFT[u]=soma(C.filter(c=>c.uf===u));BR=soma(C);
+fetch('dados.json').then(r=>r.json()).then(d=>{C=d.map(obj);C.forEach(c=>porId.set(c.id,c));for(const u in UFN)UFT[u]=soma(C.filter(c=>c.uf===u));BR=soma(C);explorar();
  const at=['Araruama','São Paulo','Rio de Janeiro','Curitiba','Brusque','Maceió','Porto Alegre','Boa Vista'];$('#atalhos').innerHTML='<span class="s" style="align-self:center;font-size:14px">Experimente:</span>'+at.map(n=>{const c=C.find(x=>x.nm===n&&(n!=='Boa Vista'||x.uf==='rr'));return c?`<button data-id="${c.id}">${n}</button>`:''}).join('')+'<button id="aleat">🎲 Aleatória</button>';
  const p=new URLSearchParams(location.search);if(p.get('vs')&&porId.has(p.get('vs')))comp=porId.get(p.get('vs'));if(p.get('c')&&porId.has(p.get('c')))abrir(porId.get(p.get('c')));});
 document.addEventListener('click',e=>{const b=e.target.closest('[data-id]');if(b&&b.closest('#atalhos')){abrir(porId.get(b.dataset.id));}if(e.target.id==='aleat'){abrir(C[Math.floor(Math.random()*C.length)]);}});
@@ -102,6 +126,23 @@ function painel(){const c=atual,u=UFT[c.uf],venceu=c.L2>c.F2?'Lula':'Flávio',vN
  $('#info').innerHTML=h;liga($('#q2'),$('#sug2'),x=>{comp=x;history.replaceState(null,'',`?c=${atual.id}&vs=${x.id}`);painel()});}
 function tabComp(a,b){const L=(r,f,fm=v=>pc(v)+'%')=>`<tr><td>${r}</td><td>${fm(f(a))}</td><td>${fm(f(b))}</td></tr>`;
  return `<table class="tb"><tr><th></th><th>${a.nm} (${a.uf.toUpperCase()})</th><th>${b.nm} (${b.uf.toUpperCase()})</th></tr>${L('Lula no 2º turno',x=>x.l2)}${L('Flávio no 2º turno',x=>100-x.l2)}${L('Lula nos votos novos',x=>Math.min(100,x.sn))}${L('Votos novos do Lula',x=>x.dL,v=>sg(v))}${L('Votos novos do Flávio',x=>x.dF,v=>sg(v))}${L('Comparecimento 2º',x=>x.tu2)}${L('Lula em 2022',x=>x.l22??NaN,v=>isNaN(v)?'–':pc(v)+'%')}${L('Eleitores aptos',x=>x.ap,v=>nf(v))}</table>`}
+
+// ---------- explorar ----------
+function explorar(){const b=BR;$('#brk').innerHTML=`<div class="kpi"><div class="v r">Lula ${pc(b.l2,2)}%</div><div class="l">resultado do 2º turno</div></div><div class="kpi"><div class="v r">Lula ${pc(b.sn,1)}%</div><div class="l">só com os votos novos</div></div><div class="kpi"><div class="v">${nf(C.filter(c=>c.F1>c.L1&&c.L2>c.F2).length)}</div><div class="l">cidades viraram para o Lula (${C.filter(c=>c.L1>c.F1&&c.F2>c.L2).length} para o Flávio)</div></div><div class="kpi"><div class="v r">+${pc(b.dL/1e6,1)} mi</div><div class="l">votos novos do Lula (sem o exterior)</div></div><div class="kpi"><div class="v b">+${pc(b.dF/1e6,1)} mi</div><div class="l">votos novos do Flávio (sem o exterior)</div></div><div class="kpi"><div class="v">${pc(b.tu2,1)}%</div><div class="l">comparecimento (${pc(b.tu1,1)}% no 1º)</div></div>`;
+ $('#fuf').innerHTML='<option value="">Brasil</option>'+Object.entries(UFN).sort((a,b)=>a[1].localeCompare(b[1])).map(([u,n])=>`<option value="${u}">${n}</option>`).join('');rankear();estados()}
+const RK={novosL:['Lula nos votos novos',c=>Math.min(100,c.sn),c=>pc(Math.min(100,c.sn))+'%'],novosF:['Flávio nos votos novos',c=>100-Math.min(100,c.sn),c=>pc(100-Math.min(100,c.sn))+'%'],inv:['Flávio no real → Lula nos novos',c=>c.l2<50?Math.min(100,c.sn)+(100-c.l2):-1,c=>pc(100-c.l2)+'% → '+pc(Math.min(100,c.sn))+'%'],vira:['Flávio no 1º → Lula no 2º',c=>c.F1>c.L1&&c.L2>c.F2?c.c2:-1,c=>`${pc(100*c.F1/c.v1)}% → Lula ${pc(c.l2)}%`],lula:['Lula no 2º turno',c=>c.l2,c=>pc(c.l2)+'%'],flavio:['Flávio no 2º turno',c=>100-c.l2,c=>pc(100-c.l2)+'%'],cresceL:['Lula 2022 → 2026',c=>c.l22==null?-99:c.l2-c.l22,c=>c.l22==null?'–':pc(c.l22)+'% → '+pc(c.l2)+'%'],cresceF:['PL 2022 → 2026',c=>c.l22==null?-99:c.l22-c.l2,c=>c.l22==null?'–':pc(100-c.l22)+'% → '+pc(100-c.l2)+'%'],comp:['Comparecimento 2º turno',c=>c.tu2,c=>pc(c.tu2)+'%'],abst:['Abstenção 2º turno',c=>100-c.tu2,c=>pc(100-c.tu2)+'%'],bn:['Brancos + nulos 2º turno',c=>100*(c.b2+c.n2)/c.c2,c=>pc(100*(c.b2+c.n2)/c.c2)+'%'],terc:['Terceira via no 1º turno',c=>100*c.o1/c.v1,c=>pc(100*c.o1/c.v1)+'%']};
+let rkAt='novosL';
+function rankear(){const [rot,f,fm]=RK[rkAt],uf=$('#fuf').value,sz=+$('#fsz').value;const X=C.filter(c=>(!uf||c.uf===uf)&&c.ap>=sz&&f(c)>-1).sort((a,b)=>f(b)-f(a)).slice(0,20);
+ $('#rk').innerHTML=`<tr><th></th><th>Cidade</th><th>${rot}</th><th>eleitores</th></tr>`+(X.length?X.map((c,i)=>`<tr data-id="${c.id}"><td class="n">${i+1}º</td><td>${c.nm} <span class="s">${c.uf.toUpperCase()}</span></td><td>${fm(c)}</td><td class="s">${nf(c.ap)}</td></tr>`).join(''):'<tr><td colspan="4" class="s">Nenhuma cidade com esse filtro.</td></tr>')}
+let estOrd={k:'l2',d:-1};
+function estados(){const X=Object.entries(UFT).map(([u,s])=>({u,...s,vira:C.filter(c=>c.uf===u&&c.F1>c.L1&&c.L2>c.F2).length})).sort((a,b)=>estOrd.d*((a[estOrd.k]??0)-(b[estOrd.k]??0)));
+ const th=(k,t)=>`<th data-k="${k}" style="cursor:pointer">${t}${estOrd.k===k?(estOrd.d<0?' ▼':' ▲'):''}</th>`;
+ $('#ests').innerHTML=`<tr><th>Estado</th>${th('l2','Lula 2º')}${th('sn','Lula nos novos')}${th('l22','Lula 2022')}${th('tu2','Compar.')}${th('vira','Viradas')}</tr>`+X.map(s=>`<tr data-uf="${s.u}"><td>${UFN[s.u]}</td><td class="${s.l2>=50?'r':'b'}">${pc(s.l2)}%</td><td>${pc(Math.min(100,s.sn))}%</td><td class="s">${pc(s.l22)}%</td><td>${pc(s.tu2)}%</td><td>${s.vira}</td></tr>`).join('')}
+document.addEventListener('click',e=>{const t=e.target.closest('#rtabs button');if(t){rkAt=t.dataset.r;[...$('#rtabs').children].forEach(x=>x.classList.toggle('on',x===t));rankear()}
+ const r=e.target.closest('#rk tr[data-id]');if(r){abrir(porId.get(r.dataset.id));window.scrollTo({top:$('.busca').offsetTop-10,behavior:'smooth'})}
+ const h=e.target.closest('#ests th[data-k]');if(h){const k=h.dataset.k;estOrd={k,d:estOrd.k===k?-estOrd.d:-1};estados()}
+ const u=e.target.closest('#ests tr[data-uf]');if(u){$('#fuf').value=u.dataset.uf;rankear();$('#rk').scrollIntoView({behavior:'smooth',block:'center'})}});
+document.addEventListener('change',e=>{if(e.target.id==='fuf'||e.target.id==='fsz')rankear()});
 // ---------- card em canvas ----------
 const cv=$('#cv'),g=cv.getContext('2d'),FT='"Segoe UI",system-ui,-apple-system,Roboto,sans-serif';
 const f=(w,s)=>`${w} ${s}px ${FT}`;
