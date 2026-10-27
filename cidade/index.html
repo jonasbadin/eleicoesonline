@@ -80,13 +80,14 @@ footer{color:var(--sub);font-size:13px;margin-top:30px;line-height:1.6}
 </div>
 <script>
 const $=s=>document.querySelector(s);
-const nf=x=>x.toLocaleString('pt-BR'),pc=(x,d=1)=>x.toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d}),sg=x=>(x>=0?'+':'−')+Math.abs(x).toLocaleString('pt-BR');
+const shN=(dL,dF)=>{const a=Math.max(0,dL),b=Math.max(0,dF);return a+b>0?100*a/(a+b):NaN};
+const nf=x=>x.toLocaleString('pt-BR'),pc=(x,d=1)=>isNaN(x)?'–':x.toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d}),sg=x=>(x>=0?'+':'−')+Math.abs(x).toLocaleString('pt-BR');
 const norm=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim();
 const UFN={ac:'Acre',al:'Alagoas',am:'Amazonas',ap:'Amapá',ba:'Bahia',ce:'Ceará',df:'Distrito Federal',es:'Espírito Santo',go:'Goiás',ma:'Maranhão',mg:'Minas Gerais',ms:'Mato Grosso do Sul',mt:'Mato Grosso',pa:'Pará',pb:'Paraíba',pe:'Pernambuco',pi:'Piauí',pr:'Paraná',rj:'Rio de Janeiro',rn:'Rio Grande do Norte',ro:'Rondônia',rr:'Roraima',rs:'Rio Grande do Sul',sc:'Santa Catarina',se:'Sergipe',sp:'São Paulo',to:'Tocantins'};
 let C=[],porId=new Map(),UFT={},BR=null,atual=null,comp=null,fmt='feed';const mapas={};
 // [nome, uf, ibge, aptos, comp1, F1, L1, outros1, brancos1, nulos1, comp2, F2, L2, brancos2, nulos2, L22, B22, comp22]
-const obj=r=>{const c={nm:r[0],uf:r[1],id:r[2],ap:r[3],c1:r[4],F1:r[5],L1:r[6],o1:r[7],b1:r[8],n1:r[9],c2:r[10],F2:r[11],L2:r[12],b2:r[13],n2:r[14],L22:r[15],B22:r[16],c22:r[17],L221:r[18],B221:r[19]};c.k=norm(c.nm);c.dL=c.L2-c.L1;c.dF=c.F2-c.F1;c.l2=100*c.L2/(c.L2+c.F2);c.sn=100*c.dL/Math.max(1,c.dL+Math.max(0,c.dF));c.v1=c.F1+c.L1+c.o1;c.tu1=100*c.c1/c.ap;c.tu2=100*c.c2/c.ap;c.l22=c.L22!=null?100*c.L22/(c.L22+c.B22):null;return c};
-const soma=X=>{const s={nm:'',ap:0,c1:0,F1:0,L1:0,o1:0,b1:0,n1:0,c2:0,F2:0,L2:0,b2:0,n2:0,L22:0,B22:0,L221:0,B221:0};for(const c of X)for(const k in s)if(k!=='nm')s[k]+=c[k]||0;s.dL=s.L2-s.L1;s.dF=s.F2-s.F1;s.l2=100*s.L2/(s.L2+s.F2);s.sn=100*s.dL/(s.dL+Math.max(0,s.dF));s.v1=s.F1+s.L1+s.o1;s.tu1=100*s.c1/s.ap;s.tu2=100*s.c2/s.ap;s.l22=100*s.L22/(s.L22+s.B22);return s};
+const obj=r=>{const c={nm:r[0],uf:r[1],id:r[2],ap:r[3],c1:r[4],F1:r[5],L1:r[6],o1:r[7],b1:r[8],n1:r[9],c2:r[10],F2:r[11],L2:r[12],b2:r[13],n2:r[14],L22:r[15],B22:r[16],c22:r[17],L221:r[18],B221:r[19]};c.k=norm(c.nm);c.dL=c.L2-c.L1;c.dF=c.F2-c.F1;c.l2=100*c.L2/(c.L2+c.F2);c.sn=shN(c.dL,c.dF);c.v1=c.F1+c.L1+c.o1;c.tu1=100*c.c1/c.ap;c.tu2=100*c.c2/c.ap;c.l22=c.L22!=null?100*c.L22/(c.L22+c.B22):null;return c};
+const soma=X=>{const s={nm:'',ap:0,c1:0,F1:0,L1:0,o1:0,b1:0,n1:0,c2:0,F2:0,L2:0,b2:0,n2:0,L22:0,B22:0,L221:0,B221:0};for(const c of X)for(const k in s)if(k!=='nm')s[k]+=c[k]||0;s.dL=s.L2-s.L1;s.dF=s.F2-s.F1;s.l2=100*s.L2/(s.L2+s.F2);s.sn=shN(s.dL,s.dF);s.v1=s.F1+s.L1+s.o1;s.tu1=100*s.c1/s.ap;s.tu2=100*s.c2/s.ap;s.l22=100*s.L22/(s.L22+s.B22);return s};
 const foto=new Image();foto.src='foto-jonas.png';
 fetch('dados.json').then(r=>r.json()).then(d=>{C=d.map(obj);C.forEach(c=>porId.set(c.id,c));for(const u in UFN)UFT[u]=soma(C.filter(c=>c.uf===u));BR=soma(C);explorar();
  const at=['Araruama','São Paulo','Rio de Janeiro','Curitiba','Brusque','Maceió','Porto Alegre','Boa Vista'];$('#atalhos').innerHTML='<span class="s" style="align-self:center;font-size:14px">Experimente:</span>'+at.map(n=>{const c=C.find(x=>x.nm===n&&(n!=='Boa Vista'||x.uf==='rr'));return c?`<button data-id="${c.id}">${n}</button>`:''}).join('')+'<button id="aleat">🎲 Aleatória</button>';
@@ -104,15 +105,15 @@ async function mapa(uf){if(!mapas[uf])mapas[uf]=await (await fetch(`mapa/${uf}.j
 // ranking dentro do estado
 const rank=(c,f,desc=true)=>{const X=C.filter(x=>x.uf===c.uf).sort((a,b)=>desc?f(b)-f(a):f(a)-f(b));return{pos:X.indexOf(c)+1,n:X.length}};
 async function render(){const c=atual;$('#grid').style.display='';$('#vazio').style.display='none';await mapa(c.uf);desenhar();painel()}
-function painel(){const c=atual,u=UFT[c.uf],venceu=c.L2>c.F2?'Lula':'Flávio',vN=c.dL>c.dF?'Lula':'Flávio';
+function painel(){const c=atual,u=UFT[c.uf],venceu=c.L2>c.F2?'Lula':'Flávio',vN=isNaN(c.sn)?null:c.sn>=50?'Lula':'Flávio';
  const rL=rank(c,x=>x.l2),rN=rank(c,x=>Math.min(100,x.sn)),rT=rank(c,x=>x.tu2);
  const linha=(rot,a,b,d)=>`<tr><td>${rot}</td><td>${a}</td><td>${b}</td><td>${d}</td></tr>`;
  const cmp=(rot,f,fm=v=>pc(v)+'%')=>`<tr><td>${rot}</td><td>${fm(f(c))}</td><td>${fm(f(u))}</td><td>${fm(f(BR))}</td></tr>`;
  let h=`<div class="painel"><h2>${c.nm} · ${UFN[c.uf]}</h2>
  <div class="kpis"><div class="kpi"><div class="v ${venceu==='Lula'?'r':'b'}">${venceu} ${pc(venceu==='Lula'?c.l2:100-c.l2)}%</div><div class="l">resultado do 2º turno</div></div>
- <div class="kpi"><div class="v ${vN==='Lula'?'r':'b'}">${vN} ${pc(vN==='Lula'?Math.min(100,c.sn):100-Math.min(100,c.sn))}%</div><div class="l">só com os votos novos</div></div>
+ <div class="kpi"><div class="v ${vN==='Lula'?'r':vN?'b':''}">${vN?vN+' '+pc(vN==='Lula'?c.sn:100-c.sn)+'%':'nenhum'}</div><div class="l">${vN?'só com os votos novos':'os dois perderam votos no 2º turno'}</div></div>
  <div class="kpi"><div class="v">${nf(c.ap)}</div><div class="l">eleitores aptos</div></div></div>
- <p class="frase">${c.dF<0?`Do 1º para o 2º turno, o Lula ganhou <b>${nf(c.dL)}</b> votos e o Flávio <b>perdeu ${nf(-c.dF)}</b>.`:`Do 1º para o 2º turno, o Lula ganhou <b>${nf(c.dL)}</b> votos e o Flávio <b>${nf(c.dF)}</b>.`} No 1º turno, os outros candidatos somaram <b>${nf(c.o1)}</b> votos.</p></div>
+ <p class="frase">Do 1º para o 2º turno, o Lula ${c.dL>=0?`ganhou <b>${nf(c.dL)}</b>`:`<b>perdeu ${nf(-c.dL)}</b>`} votos e o Flávio ${c.dF>=0?`ganhou <b>${nf(c.dF)}</b>`:`<b>perdeu ${nf(-c.dF)}</b>`}.${c.dL<0&&c.dF<0?` Os dois perderam votos porque menos gente votou no 2º turno (${nf(c.c1)} no 1º, ${nf(c.c2)} no 2º).`:``} No 1º turno, os outros candidatos somaram <b>${nf(c.o1)}</b> votos.</p></div>
  <div class="painel"><h2>Votos, turno a turno</h2><table class="tb"><tr><th></th><th>1º turno</th><th>2º turno</th><th>diferença</th></tr>
  ${linha('<span class="b">Flávio</span>',nf(c.F1),nf(c.F2),'<span class="b">'+sg(c.dF)+'</span>')}${linha('<span class="r">Lula</span>',nf(c.L1),nf(c.L2),'<span class="r">'+sg(c.dL)+'</span>')}
  ${linha('Outros candidatos',nf(c.o1),'–','')}${linha('Brancos',nf(c.b1),nf(c.b2),sg(c.b2-c.b1))}${linha('Nulos',nf(c.n1),nf(c.n2),sg(c.n2-c.n1))}
@@ -126,13 +127,13 @@ function painel(){const c=atual,u=UFT[c.uf],venceu=c.L2>c.F2?'Lula':'Flávio',vN
  <p class="frase">${Math.abs(d)<0.5?`Praticamente igual a 2022.`:d>0?`O Lula foi <b>${pc(d)} pontos melhor</b> que em 2022.`:`O PL foi <b>${pc(-d)} pontos melhor</b> que em 2022.`} No Brasil, a variação foi de ${pc(BR.l2-BR.l22)} ponto para o Lula.</p></div>`}
 
  if(c.L221!=null){const t=(rot,cor,a,b)=>`<tr><td><span class="${cor}">${rot}</span></td><td>${nf(a)}</td><td>${nf(b)}</td><td class="${cor}">${sg(b-a)}</td><td>${pc(100*(b-a)/a)}%</td></tr>`;
- const g22L=c.L22-c.L221,g22B=c.B22-c.B221,s22=100*g22L/Math.max(1,g22L+Math.max(0,g22B));
+ const g22L=c.L22-c.L221,g22B=c.B22-c.B221,s22=shN(g22L,g22B);
  h+=`<div class="painel"><h2>Do 1º para o 2º turno: 2022 × 2026</h2><table class="tb"><tr><th></th><th>1º turno</th><th>2º turno</th><th>ganhou</th><th>cresceu</th></tr>
  <tr><td colspan="5" class="s" style="font-size:13px;padding-top:12px">2022 · Lula × Bolsonaro</td></tr>${t('Lula','r',c.L221,c.L22)}${t('Bolsonaro','b',c.B221,c.B22)}
  <tr><td colspan="5" class="s" style="font-size:13px;padding-top:12px">2026 · Lula × Flávio</td></tr>${t('Lula','r',c.L1,c.L2)}${t('Flávio','b',c.F1,c.F2)}</table>
  <p class="frase">Dos votos novos do 2º turno, o Lula ficou com <b>${pc(Math.min(100,s22))}%</b> em 2022 e com <b>${pc(Math.min(100,c.sn))}%</b> em 2026. ${g22B>g22L&&c.dL>c.dF?'Em 2022 quem mais cresceu aqui foi o Bolsonaro; em 2026, o Lula.':g22L>g22B&&c.dL>c.dF?'Nos dois anos, o Lula foi quem mais cresceu aqui entre os turnos.':g22B>g22L&&c.dF>c.dL?'Nos dois anos, o candidato do PL foi quem mais cresceu aqui entre os turnos.':'Em 2022 quem mais cresceu aqui foi o Lula; em 2026, o Flávio.'}</p></div>`}
  h+=`<div class="painel"><h2>Comparar com outra cidade</h2><div class="busca" style="margin:0 0 12px"><input id="q2" placeholder="Digite outra cidade…" autocomplete="off" value="${comp?comp.nm+' ('+comp.uf.toUpperCase()+')':''}"><div class="sug" id="sug2"></div></div>${comp?tabComp(c,comp):'<p class="s" style="font-size:14px">Ex.: a cidade vizinha, a capital do estado, a cidade onde você nasceu.</p>'}</div>`;
- $('#info').innerHTML=h;liga($('#q2'),$('#sug2'),x=>{comp=x;history.replaceState(null,'',`?c=${atual.id}&vs=${x.id}`);painel()});}
+ $('#info').innerHTML=h.replace(/–%/g,'–');liga($('#q2'),$('#sug2'),x=>{comp=x;history.replaceState(null,'',`?c=${atual.id}&vs=${x.id}`);painel()});}
 function tabComp(a,b){const L=(r,f,fm=v=>pc(v)+'%')=>`<tr><td>${r}</td><td>${fm(f(a))}</td><td>${fm(f(b))}</td></tr>`;
  return `<table class="tb"><tr><th></th><th>${a.nm} (${a.uf.toUpperCase()})</th><th>${b.nm} (${b.uf.toUpperCase()})</th></tr>${L('Lula no 2º turno',x=>x.l2)}${L('Flávio no 2º turno',x=>100-x.l2)}${L('Lula nos votos novos',x=>Math.min(100,x.sn))}${L('Votos novos do Lula',x=>x.dL,v=>sg(v))}${L('Votos novos do Flávio',x=>x.dF,v=>sg(v))}${L('Comparecimento 2º',x=>x.tu2)}${L('Lula em 2022',x=>x.l22??NaN,v=>isNaN(v)?'–':pc(v)+'%')}${L('Eleitores aptos',x=>x.ap,v=>nf(v))}</table>`}
 
@@ -180,16 +181,25 @@ function desenhar(){const c=atual,story=fmt==='story',W=1080,H=story?1920:1350;c
  lin('Flávio','#7fb0ff',nf(c.F1),nf(c.F2),sg(c.dF),'#7fb0ff');lin('Lula','#ff6b5b',nf(c.L1),nf(c.L2),sg(c.dL),'#ff6b5b');lin('Outros','rgba(255,255,255,.85)',nf(c.o1),'–','','#fff');
  y+=story?70:50;
  // destaque
- const vN=c.dL>c.dF?'Lula':'Flávio',pN=vN==='Lula'?Math.min(100,c.sn):100-Math.min(100,c.sn),bh=story?300:250;rr(P,y,W-2*P,bh,32);g.fillStyle='rgba(255,255,255,.08)';g.fill();g.lineWidth=2;g.strokeStyle='rgba(255,255,255,.25)';g.stroke();
- texto('Se a eleição fosse só com os votos novos:',W/2,y+60,f(800,32),'#fff','center');texto(`${vN} ${pc(pN,2)}%`,W/2,y+(story?190:160),f(900,story?120:104),vN==='Lula'?'#ff6b5b':'#7fb0ff','center');
- texto(`no resultado real, venceu ${c.L2>c.F2?'Lula':'Flávio'}`,W/2,y+bh-30,f(600,26),'rgba(255,255,255,.8)','center');
+ const semN=isNaN(c.sn),vN=semN?'':c.sn>=50?'Lula':'Flávio',pN=semN?0:vN==='Lula'?c.sn:100-c.sn,bh=story?300:250;rr(P,y,W-2*P,bh,32);g.fillStyle='rgba(255,255,255,.08)';g.fill();g.lineWidth=2;g.strokeStyle='rgba(255,255,255,.25)';g.stroke();
+ texto('Se a eleição fosse só com os votos novos:',W/2,y+60,f(800,32),'#fff','center');if(semN){texto('Os dois perderam votos',W/2,y+(story?160:135),f(900,60),'#fff','center');texto('menos gente votou no 2º turno',W/2,y+(story?215:185),f(700,32),'rgba(255,255,255,.85)','center')}else texto(`${vN} ${pc(pN,2)}%`,W/2,y+(story?190:160),f(900,story?120:104),vN==='Lula'?'#ff6b5b':'#7fb0ff','center');
+ if(!semN)texto(`no resultado real, venceu ${c.L2>c.F2?'Lula':'Flávio'}`,W/2,y+bh-30,f(600,26),'rgba(255,255,255,.8)','center');
  // rodapé
  if(story){texto('Faça o card da sua cidade:',W/2,H-150,f(800,34),'#fff','center');texto('eleicoesonline.com.br/cidade',W/2,H-100,f(900,40),'#f4b740','center')}
  texto('Votos novos = quanto cada um cresceu do 1º para o 2º turno · dados oficiais do TSE',W/2,H-(story?40:32),f(700,22),'rgba(255,255,255,.7)','center')}
 foto.onload=()=>{if(atual)desenhar()};
 $('#fmt').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;fmt=b.dataset.f;[...$('#fmt').children].forEach(x=>x.classList.toggle('on',x===b));desenhar()});
 const nomeArq=()=>`card-${norm(atual.nm).replace(/ /g,'-')}-${atual.uf}-${fmt}.png`;
-$('#baixar').onclick=()=>{const a=document.createElement('a');a.download=nomeArq();a.href=cv.toDataURL('image/png');a.click()};
+// no celular, «Salvar» abre a folha de compartilhar só com a imagem: no iPhone aparece «Salvar Imagem» (vai para Fotos); no Android, «Salvar na galeria»/Fotos
+const celular=matchMedia('(pointer:coarse)').matches&&!!navigator.canShare;
+if(celular)$('#baixar').textContent='⬇ Salvar na galeria';
+const baixarArq=()=>{const a=document.createElement('a');a.download=nomeArq();a.href=cv.toDataURL('image/png');a.click()};
+$('#baixar').onclick=()=>{if(!celular)return baixarArq();cv.toBlob(async b=>{const file=new File([b],nomeArq(),{type:'image/png'});
+ if(navigator.canShare({files:[file]})){try{await navigator.share({files:[file]})}catch(e){if(e&&e.name!=='AbortError')mostrarImg()}}else mostrarImg()},'image/png')};
+// plano B: abre a imagem na tela para segurar o dedo e escolher «Salvar na galeria/Adicionar a Fotos»
+function mostrarImg(){const d=document.createElement('div');d.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:99;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:12px';
+ d.innerHTML=`<img src="${cv.toDataURL('image/png')}" style="max-width:100%;max-height:80vh;border-radius:12px"><div style="color:#fff;font-weight:800;text-align:center">Segure o dedo na imagem e toque em «Salvar na galeria» ou «Adicionar a Fotos»</div><button class="btn" style="flex:0;min-width:160px">Fechar</button>`;
+ d.querySelector('button').onclick=()=>d.remove();document.body.appendChild(d)}
 $('#compart').onclick=()=>cv.toBlob(async b=>{const file=new File([b],nomeArq(),{type:'image/png'}),url=location.href;try{if(navigator.canShare&&navigator.canShare({files:[file]}))await navigator.share({files:[file],title:`${atual.nm} no 2º turno`,text:`E se a eleição fosse só com os votos novos? Veja a sua cidade: ${url}`});else{await navigator.clipboard.writeText(url);alert('Link copiado!')}}catch(e){}});
 $('#link').onclick=async()=>{try{await navigator.clipboard.writeText(location.href);$('#link').textContent='Link copiado ✓';setTimeout(()=>$('#link').textContent='Copiar link',1800)}catch(e){prompt('Copie o link:',location.href)}};
 </script></body></html>
