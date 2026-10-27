@@ -44,10 +44,10 @@ canvas{width:100%;height:auto;border-radius:16px;box-shadow:0 20px 60px rgba(0,0
 #ests .ns{display:none}.rk td:nth-child(2),.rk th:nth-child(2){text-align:left}
 @media(max-width:560px){.tb td{font-size:14px;padding:7px 4px}.tb th{font-size:11px;padding:3px 4px}#ests .hm{display:none}#ests .nl{display:none}#ests .ns{display:inline}.painel{padding:14px}}
 details{border-top:1px solid var(--linha);padding:12px 0}details summary{cursor:pointer;font-weight:800;font-size:16px}details p{color:var(--sub);margin-top:8px;line-height:1.55}
-.cont{margin-left:auto;margin-right:14px;font-size:14px;color:var(--sub);font-weight:700}
+.cont{display:block;text-align:center;margin-top:10px;font-size:10px;opacity:.45;font-weight:400}
 footer{color:var(--sub);font-size:13px;margin-top:30px;line-height:1.6}
 </style></head><body><div class="wrap">
-<header><a class="logo" href="/">eleicoes<b>online</b>.com.br</a><span class="cont" id="contador" hidden></span><a class="eu" href="https://www.instagram.com/jonasbadin/" target="_blank" rel="noopener"><img src="cidade/foto-jonas.png" alt="">@jonasbadin</a></header>
+<header><a class="logo" href="/">eleicoes<b>online</b>.com.br</a><a class="eu" href="https://www.instagram.com/jonasbadin/" target="_blank" rel="noopener"><img src="cidade/foto-jonas.png" alt="">@jonasbadin</a></header>
 <h1>E se a eleição fosse só com os <span>votos novos</span>?<br>Veja a sua cidade.</h1>
 <p class="lead">Digite a cidade e baixe o card pronto para o story ou o feed. Votos novos = quanto cada candidato cresceu do 1º para o 2º turno. Dados oficiais do TSE, 100% apurado.</p>
 <div class="busca"><input id="q" placeholder="Digite sua cidade… (ex.: Brusque, Maceió)" autocomplete="off"><div class="sug" id="sug"></div></div>
@@ -77,7 +77,7 @@ footer{color:var(--sub);font-size:13px;margin-top:30px;line-height:1.6}
   <details><summary>Onde está a apuração ao vivo da noite da eleição?</summary><p>A página da apuração ao vivo continua no ar, congelada no resultado final: <a href="/apuracao/">eleicoesonline.com.br/apuracao</a>.</p></details>
  </div>
 </section>
-<footer>Fonte: TSE, resultados oficiais do 1º e do 2º turno de 2026 e do 2º turno de 2022, por município. «Só com os votos novos» é uma conta: quanto cada candidato cresceu entre os turnos, sem considerar os votos do 1º turno. O resultado que vale é o oficial. Página independente, criada por <a href="https://www.instagram.com/jonasbadin/" target="_blank" rel="noopener">@jonasbadin</a>.</footer>
+<footer>Fonte: TSE, resultados oficiais do 1º e do 2º turno de 2026 e do 2º turno de 2022, por município. «Só com os votos novos» é uma conta: quanto cada candidato cresceu entre os turnos, sem considerar os votos do 1º turno. O resultado que vale é o oficial. Página independente, criada por <a href="https://www.instagram.com/jonasbadin/" target="_blank" rel="noopener">@jonasbadin</a>.<span class="cont" id="contador" hidden></span></footer>
 </div>
 <script>
 const $=s=>document.querySelector(s);
@@ -157,7 +157,7 @@ document.addEventListener('change',e=>{if(e.target.id==='fuf'||e.target.id==='fs
 
 // contador de visitantes
 (()=>{const el=document.getElementById('contador'),K='eo-visita-2t',B='https://abacus.jasoncameron.dev';
- const mostra=v=>{if(v>0){el.textContent='👁 '+v.toLocaleString('pt-BR')+' visitantes';el.hidden=false}};
+ const mostra=v=>{if(v>0){el.textContent=v.toLocaleString('pt-BR')+' visitas';el.hidden=false}};
  const chama=async op=>{try{const r=await fetch(`${B}/${op}/eleicoesonline-com-br/visitas`,{cache:'no-store'});if(r.ok)mostra((await r.json()).value)}catch(e){}};
  let ja=null;try{ja=localStorage.getItem(K)}catch(e){}
  if(location.hostname.endsWith('eleicoesonline.com.br'))chama(ja?'get':'hit').then(()=>{try{localStorage.setItem(K,'1')}catch(e){}});else chama('get')})();
