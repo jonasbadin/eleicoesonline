@@ -41,6 +41,8 @@ canvas{width:100%;height:auto;border-radius:16px;box-shadow:0 20px 60px rgba(0,0
 .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.tabs button{background:rgba(255,255,255,.07);border:1px solid var(--linha);color:#fff;border-radius:999px;padding:8px 14px;font-size:14px;font-weight:700;cursor:pointer}.tabs button.on{background:var(--am);color:#0b1530;border-color:var(--am)}
 .filtros{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px;align-items:center}.filtros select{background:#16234a;color:#fff;border:1px solid var(--linha);border-radius:10px;padding:8px 10px;font-size:14px}
 .rk td{cursor:pointer}.rk tr:hover td{background:rgba(244,183,64,.08)}.rk .n{color:var(--sub);width:34px}
+#ests .ns{display:none}.rk td:nth-child(2),.rk th:nth-child(2){text-align:left}
+@media(max-width:560px){.tb td{font-size:14px;padding:7px 4px}.tb th{font-size:11px;padding:3px 4px}#ests .hm{display:none}#ests .nl{display:none}#ests .ns{display:inline}.painel{padding:14px}}
 details{border-top:1px solid var(--linha);padding:12px 0}details summary{cursor:pointer;font-weight:800;font-size:16px}details p{color:var(--sub);margin-top:8px;line-height:1.55}
 footer{color:var(--sub);font-size:13px;margin-top:30px;line-height:1.6}
 </style></head><body><div class="wrap">
@@ -144,7 +146,7 @@ function rankear(){const [rot,f,fm]=RK[rkAt],uf=$('#fuf').value,sz=+$('#fsz').va
 let estOrd={k:'l2',d:-1};
 function estados(){const X=Object.entries(UFT).map(([u,s])=>({u,...s,vira:C.filter(c=>c.uf===u&&c.F1>c.L1&&c.L2>c.F2).length})).sort((a,b)=>estOrd.d*((a[estOrd.k]??0)-(b[estOrd.k]??0)));
  const th=(k,t)=>`<th data-k="${k}" style="cursor:pointer">${t}${estOrd.k===k?(estOrd.d<0?' ▼':' ▲'):''}</th>`;
- $('#ests').innerHTML=`<tr><th>Estado</th>${th('l2','Lula 2º')}${th('sn','Lula nos novos')}${th('l22','Lula 2022')}${th('tu2','Compar.')}${th('vira','Viradas')}</tr>`+X.map(s=>`<tr data-uf="${s.u}"><td>${UFN[s.u]}</td><td class="${s.l2>=50?'r':'b'}">${pc(s.l2)}%</td><td>${pc(Math.min(100,s.sn))}%</td><td class="s">${pc(s.l22)}%</td><td>${pc(s.tu2)}%</td><td>${s.vira}</td></tr>`).join('')}
+ $('#ests').innerHTML=`<tr><th>Estado</th>${th('l2','Lula 2º')}${th('sn','Lula nos novos')}<th class="hm" data-k="l22" style="cursor:pointer">Lula 2022</th><th class="hm" data-k="tu2" style="cursor:pointer">Compar.</th>${th('vira','Viradas')}</tr>`+X.map(s=>`<tr data-uf="${s.u}"><td><span class="nl">${UFN[s.u]}</span><span class="ns">${s.u.toUpperCase()}</span></td><td class="${s.l2>=50?'r':'b'}">${pc(s.l2)}%</td><td>${pc(Math.min(100,s.sn))}%</td><td class="s hm">${pc(s.l22)}%</td><td class="hm">${pc(s.tu2)}%</td><td>${s.vira}</td></tr>`).join('')}
 document.addEventListener('click',e=>{const t=e.target.closest('#rtabs button');if(t){rkAt=t.dataset.r;[...$('#rtabs').children].forEach(x=>x.classList.toggle('on',x===t));rankear()}
  const r=e.target.closest('#rk tr[data-id]');if(r){abrir(porId.get(r.dataset.id));window.scrollTo({top:$('.busca').offsetTop-10,behavior:'smooth'})}
  const h=e.target.closest('#ests th[data-k]');if(h){const k=h.dataset.k;estOrd={k,d:estOrd.k===k?-estOrd.d:-1};estados()}
